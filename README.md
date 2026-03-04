@@ -3,28 +3,33 @@
 <img width="375" height="867" alt="image" src="https://github.com/user-attachments/assets/c30a09af-5dfd-4db5-9841-4b334d14433d" />
 
 
-The idea to use php as a turing complete preprocessor for C
-comes from the fact that php is a normal language, yet it is template language by default.
+The idea to use php as a preprocessor for C comes from the simple fact that php is a widely used and known language, yet by default it is a template language.
+Basically php provides quite an abundance of ways you can represent a string and print it to the console / web page / file.
 
-So it is kinda perfect for embeding some stuff into a template and going with it.
-Yet, mostly it is used only as a language for the web.
+Yet, mostly this power is hidden from us mortals and it is used only for the web.
 
-I really like php as a glue. Yes it is pretty ugly and sometimes unintuitive.
-But it is a duct tape. In one project of mine I have used php to pack dynamically javascript web components.
-They consist of http template, css part and of course the class definition in a form of .js file.
+### An example of php as a quick no build solution
+In one project of mine I have used php to pack dynamically javascript web components.
+If you don't know, typically you would do something like this: http template, css and .js class definition.
 
-By default you must put everything into .js file, as strings basically.
-Which might be not so fun if your html is pretty large and ugly.
+By default W3C wants it from us in a single .js file. Html here is nothing but a string.
+Which might be slightly annoying if your html is pretty large and ugly.
 
-So instead of embeding these parts in javascript I have used php.
+So instead of embeding these parts in javascript file or having a complex build pipeline with build scripts. 
+I have... used php to assemble the parts on the fly and spit them out.
+Achieving this ideal workflow where I just do ctrl + f5 in the browser and it just works.
 
-The same can be applied here in C: just think about it. We can embed weird stuff before compiler even reads a file and it never goes stale.
-Instead of freaking scripts which you must invoke, this thing is invoked by your system automatically.
+### The same can be applied here in C
+Just think about it. We can embed weird stuff when compiler reads a file and it will never be stale again.
+No build scripts, no file watchers or other nonsense. Just a simple unity build + generation on demand when we need to embed some weird stuff.
+Instead of having scripts which you must invoke, this thing is invoked by your system automatically.
 
-Also, you can manage dependecies, prepare them after you download and basically construct your own simple build system in place make / cmkake whatever nonsense.
-And package managers. If you know php you don't need to know about all of that stuff until necessary and you can write whatever you like here.
+Also, you can manage dependecies here, for example nothing really stops you from writing github.php. Which will declare repositories you are aware of.
+And then you would just fetch individual files right from the github.
 
-Because it is a normal turing complete language which is also... imperative. And... object oriented.
+By having adequate scripting language at preprocessor stage we might just construct our very own simple build system in place of make / cmkake whatever nonsense. And package managers. 
+If you know php you don't need to know about all of that stuff until you hit the necessety to integrate with a project which uses these build tools.
+That's the idea.
 
 ## start
 
@@ -52,10 +57,10 @@ int main() {
 }
 ```
 
-this looks perfectly fine
-just a normal c program
+This looks perfectly fine.
+Just a normal c program.
 
-except that nowhere vendor/tinyexpr.h actually lives
+Except that nowhere vendor/tinyexpr.h actually lives.
 (in some system's cache for speedup, but it is refetched from the internet every 60 seconds)
 ```php
 <?php
@@ -72,7 +77,7 @@ echo "/* Cached Proxy */\n";
 echo file_get_contents($cacheFile);
 ```
 
-code/hello.c is not even a real c file
+Code/hello.c is not even a real c file.
 
 ```php
 <?php
@@ -90,21 +95,15 @@ long greet() {
 }
 ```
 
-same with icon.png.h after I added it
+Same with icon.png.h after I added it.
 
 ## ?!
 
-it kinda works, but it is a little broken
-sometimes you need to restart or wait for it to recover
+It kinda works, but it is a little broken.
+Sometimes you need to restart or wait for it to recover.
 
-so a proper fuse driver x http server implementation is needed 
-instead of rclone to support this madness
+So a proper fuse driver x http server implementation is needed instead of rclone to support this madness.
+The aim of the project might be to create a separate php runtime, which also happens to be mainly a FUSE driver or Windows' Filesystem Proxy (or whatever they use there).
 
-basically the aim of the project might be to create a separate php runtime
-which also happens to be mainly a FUSE driver or Windows' Filesystem Proxy or whatever they use there
-
-it should read open files and list directories via some routers just like 
-php -S localhost... something we have now
-
-and it should serve http as well, because you might want to spit the UI out to the browser 
-and do things from out there
+It should read open files and list directories via some routers just like `php -S localhost`. 
+And it should serve http as well, because you might want to spit the UI out to the browser or have an admin panel or reuse the same thing during development in web projects.
