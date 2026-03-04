@@ -1,5 +1,8 @@
 ## motivation
 
+<img width="375" height="867" alt="image" src="https://github.com/user-attachments/assets/c30a09af-5dfd-4db5-9841-4b334d14433d" />
+
+
 The idea to use php as a turing complete preprocessor for C
 comes from the fact that php is a normal language, yet it is template language by default.
 
