@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+EXE=$(mktemp /dev/shm/runner.XXXXXX)
+trap 'rm -f "$EXE"' EXIT
+
+if gcc /mnt/http/main.c $(find /mnt/http/vendor -name "*.c") -o "$EXE" -lm -I/mnt/http ; then
+    "$EXE" "${@:2}"
+fi
+

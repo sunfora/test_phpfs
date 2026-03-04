@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -e
+
+cleanup() {
+    kill $PHP $MNT 2>/dev/null
+    fusermount -u /mnt/http 2>/dev/null
+    exit
+}
+trap cleanup EXIT ERR INT TERM
+
+export PHP_CLI_SERVER_WORKERS=5
+php -S localhost:8000 .serve.php &
+PHP=$!
+
+rclone mount :http: /mnt/http \
+  --http-url "http://localhost:8000/" \
+  --vfs-cache-mode off \
+  --vfs-read-chunk-size 0 \
+  --low-level-retries 1 \
+  --contimeout 10s \
+  --no-checksum \
+  --no-modtime &
+
+MNT=$!
+
+wait
