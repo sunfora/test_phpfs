@@ -1,27 +1,27 @@
-## some history
+## motivation
 
-My weird idea to use php as a turing complete preprocessor for C
-actually if implemented properly the idea might be promising
+The idea to use php as a turing complete preprocessor for C
+comes from the fact that php is a normal language, yet it is template language by default.
 
-I really like php, because it is kinda wacky but in the end it is everything you need 
-packed into one box: template engine + system utilities + http
+So it is kinda perfect for embeding some stuff into a template and going with it.
+Yet, mostly it is used only as a language for the web.
 
-and it is dynamic, you start a server and it basically hot reloads
-you never wait for anything
+I really like php as a glue. Yes it is pretty ugly and sometimes unintuitive.
+But it is a duct tape. In one project of mine I have used php to pack dynamically javascript web components.
+They consist of http template, css part and of course the class definition in a form of .js file.
 
-In one project of mine I have used php to pack dynamically javascript web components.
-They consist of http template, css part and ofcourse the class definition in a form of .js
+By default you must put everything into .js file, as strings basically.
+Which might be not so fun if your html is pretty large and ugly.
 
-But... having your html and css in a string is quite an unfortunate thing to do.
-So instead of embeding these parts in javascript, instead I have used php.
+So instead of embeding these parts in javascript I have used php.
 
-The same can be said about C, even though it has some preprocessor quite a lot of boilerplate 
-comes from the C language, especially when you need to write preprocessor boilerplate.
+The same can be applied here in C: just think about it. We can embed weird stuff before compiler even reads a file and it never goes stale.
+Instead of freaking scripts which you must invoke, this thing is invoked by your system automatically.
 
-What if instead we would have used normal turing complete language?!
-But without reinvention of the compiler and the language.
+Also, you can manage dependecies, prepare them after you download and basically construct your own simple build system in place make / cmkake whatever nonsense.
+And package managers. If you know php you don't need to know about all of that stuff until necessary and you can write whatever you like here.
 
-Embed an image, some simple file.
+Because it is a normal turing complete language which is also... imperative. And... object oriented.
 
 ## start
 
@@ -33,7 +33,7 @@ bash compile
 ```
 3. ?? PROFIT
 
-## source code of main
+## main
 
 ```c
 #include "code/hello.c"
@@ -53,7 +53,7 @@ this looks perfectly fine
 just a normal c program
 
 except that nowhere vendor/tinyexpr.h actually lives
-(in some system's cache for speedup, but it is refetched from the internet from time to time)
+(in some system's cache for speedup, but it is refetched from the internet every 60 seconds)
 ```php
 <?php
 $cacheFile = '/tmp/tinyexpr_c_cache';
@@ -86,8 +86,22 @@ long greet() {
   return 0;
 }
 ```
+
+same with icon.png.h after I added it
+
 ## ?!
 
-though it kinda breaks if you really spam the compilation
-so a proper fuse driver instead of rclone is probably needed
-to support this kind of madness
+it kinda works, but it is a little broken
+sometimes you need to restart or wait for it to recover
+
+so a proper fuse driver x http server implementation is needed 
+instead of rclone to support this madness
+
+basically the aim of the project might be to create a separate php runtime
+which also happens to be mainly a FUSE driver or Windows' Filesystem Proxy or whatever they use there
+
+it should read open files and list directories via some routers just like 
+php -S localhost... something we have now
+
+and it should serve http as well, because you might want to spit the UI out to the browser 
+and do things from out there
